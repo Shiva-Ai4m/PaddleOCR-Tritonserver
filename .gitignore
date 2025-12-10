@@ -33,8 +33,11 @@ test_images/
 .DS_Store
 Thumbs.db
 
-# Test outputs
+# Test outputs (but allow examples/)
 banner_test.*
 test_result.*
 *.jpg
 *.json
+!examples/*.jpg
+!examples/*.json
+!examples/*.png

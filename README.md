@@ -75,32 +75,57 @@ curl localhost:8000/v2/health/ready
 python3 test_ocr_final_correct.py <input_image> [output_visualization.jpg]
 ```
 
-### Examples
+### Example
 
 ```bash
-# Basic usage
-python3 test_ocr_final_correct.py screenshot.png
-
-# With visualization output
-python3 test_ocr_final_correct.py document.jpg result.jpg
+# Test with provided sample
+python3 test_ocr_final_correct.py examples/sample_input.png examples/result.jpg
 ```
 
-## Output
+**Input:**
+![Sample Input](examples/sample_input.png)
 
-The script generates:
-1. **Visualization**: Image with green bounding boxes and recognized text
-2. **JSON file**: Structured results with bboxes, text, and confidence scores
+**Output:**
+![Sample Output](examples/sample_output.jpg)
+
+## Output Format
+
+The script generates two files:
+
+### 1. Visualization (JPG)
+Image with green bounding boxes and recognized text overlaid
+
+### 2. JSON Results
+Structured data with detection and recognition results:
 
 ```json
-[
-  {
-    "bbox": [[10, 20], [100, 20], [100, 50], [10, 50]],
-    "text": "Hello World",
-    "rec_conf": 0.987,
-    "det_score": 0.942
-  }
-]
+{
+  "num_detections": 3,
+  "results": [
+    {
+      "text": "PaddleOCR3.0",
+      "box": [[157, 380], [1160, 380], [1160, 439], [157, 439]],
+      "rec_conf": 0.975,
+      "det_score": 0.880
+    },
+    {
+      "text": "PaddleOCR",
+      "box": [[310, 445], [1008, 449], [1008, 532], [310, 529]],
+      "rec_conf": 0.920,
+      "det_score": 0.738
+    }
+  ]
+}
 ```
+
+**Field Descriptions:**
+- `num_detections`: Total number of text regions detected
+- `text`: Recognized text string
+- `box`: Bounding box coordinates `[[x1,y1], [x2,y2], [x3,y3], [x4,y4]]` (4-point polygon)
+- `rec_conf`: Recognition confidence score (0-1)
+- `det_score`: Detection confidence score (0-1)
+
+See `examples/sample_output.json` for complete example output.
 
 ## Known Limitations
 
@@ -150,6 +175,19 @@ podman logs -f triton-ocr
 podman stop triton-ocr
 ```
 
+## Author
+
+**Shivashankarar**
+AI/ML Engineer
+Email: shivashankarar@ai4mtech.com
+Organization: AI4M Technologies
+
+**Contributions:**
+- Triton server integration with PaddleOCR models
+- Client-side OCR pipeline implementation
+- ONNX model optimization for inference
+- Complete testing and documentation
+
 ## License
 
 Based on PaddleOCR (Apache 2.0) and NVIDIA Triton Server.
@@ -159,3 +197,9 @@ Based on PaddleOCR (Apache 2.0) and NVIDIA Triton Server.
 - [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)
 - [Triton Inference Server](https://github.com/triton-inference-server/server)
 - [PP-OCRv3 Paper](https://arxiv.org/abs/2206.03001)
+
+---
+
+**Repository**: https://github.com/Shiva-Ai4m/PaddleOCR-Tritonserver
+**Created**: December 2024
+**Status**: Active Development
