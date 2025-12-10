@@ -27,6 +27,7 @@ Client (Python)                    Triton Server
 - ✅ **PaddleOCR PP-OCRv3**: Industry-standard English OCR models
 - ✅ **ONNX Inference**: Fast inference with ONNX Runtime
 - ✅ **Accurate**: Implements PaddleOCR's exact algorithms
+- ✅ **Fast**: 69ms average latency (14.5 images/sec on CPU)
 
 ## Models
 
@@ -126,6 +127,42 @@ Structured data with detection and recognition results:
 - `det_score`: Detection confidence score (0-1)
 
 See `examples/sample_output.json` for complete example output.
+
+## Performance
+
+### Latency Benchmark
+
+**Test Image:** 2560x720 pixels with 4 text regions
+
+| Metric | Value |
+|--------|-------|
+| **Average Latency** | **69 ms** |
+| **Throughput** | **14.5 images/sec** |
+| **Detection** | 34 ms (49.4%) |
+| **Recognition** | 35 ms (50.6%) |
+
+### Breakdown
+
+- Detection Preprocessing: 8.5 ms (12.3%)
+- Detection Inference: 24.5 ms (35.5%)
+- Detection Postprocessing: 1.1 ms (1.6%)
+- Recognition Preprocessing: 1.7 ms (2.4%)
+- Recognition Inference: 33.1 ms (47.9%)
+- Recognition Postprocessing: 0.2 ms (0.3%)
+
+**Note:** Latency scales with number of text regions (~8.7 ms per region).
+
+For detailed benchmarks, see [LATENCY_BENCHMARK.md](LATENCY_BENCHMARK.md).
+
+### Running Benchmarks
+
+```bash
+# Basic benchmark
+python3 benchmark_latency.py examples/sample_input.png
+
+# Custom warmup and test runs
+python3 benchmark_latency.py examples/sample_input.png 5 20
+```
 
 ## Known Limitations
 
