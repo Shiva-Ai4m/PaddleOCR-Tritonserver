@@ -1,0 +1,29 @@
+name: "ocr_recognition"
+platform: "onnxruntime_onnx"
+max_batch_size: 32
+default_model_filename: "en_PP-OCRv3_rec.onnx"
+
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    dims: [3, 48, 320]     # fixed width (model supports dynamic but keeping fixed for now)
+  }
+]
+
+output [
+  {
+    name: "softmax_2.tmp_0"
+    data_type: TYPE_FP32
+    dims: [-1, 97]         # sequence_length x vocab
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU
+    count: 1
+  }
+]
+
+dynamic_batching { }

@@ -1,0 +1,29 @@
+name: "ocr_detection"
+platform: "onnxruntime_onnx"
+max_batch_size: 16
+default_model_filename: "en_PP-OCRv3_det.onnx"
+
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    dims: [3, -1, -1]
+  }
+]
+
+output [
+  {
+    name: "sigmoid_0.tmp_0"
+    data_type: TYPE_FP32
+    dims: [1, -1, -1]
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU
+    count: 1
+  }
+]
+
+dynamic_batching { }
